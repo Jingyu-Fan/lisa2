@@ -119,6 +119,10 @@ For more, see `User Guide <user_guide.md>`_.
                 if window.chromosome in coverage_bw.chroms():
                     mean_coverage = coverage_bw.stats(*window.to_tuple())[0]
                     coverage_array[i] = mean_coverage
+                # sometimes, in the bigwig files, genome chromosome names do not start with 'chr'
+                elif window.chromosome[3:] in coverage_bw.chroms()::
+                    mean_coverage = coverage_bw.stats(window.chromosome[3:],window.start,window.end)[0]
+                    coverage_array[i] = mean_coverage
 
                 if i%1000 == 0:
                     log.append(bar, update_line = True)
